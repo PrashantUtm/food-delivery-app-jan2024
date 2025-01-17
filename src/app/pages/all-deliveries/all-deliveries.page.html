@@ -1,0 +1,7 @@
+<ion-content>
+  @for(delivery of deliveries; track delivery.id) {
+    <ion-item [routerLink]="[delivery.id]">
+      {{ delivery.customer.name }}
+    </ion-item>
+  }
+</ion-content>
