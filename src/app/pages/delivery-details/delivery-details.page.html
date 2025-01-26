@@ -1,13 +1,63 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>deliveryDetails</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Details</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">deliveryDetails</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ deliveryStatus[delivery.status] }}</ion-card-title>
+      <ion-card-title>{{ delivery.expectedDeliveryTime | date: 'hh:mm MMM dd' }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p><ion-icon name="calendar-outline"></ion-icon> {{ delivery.dateOrdered | date: 'dd/MM/yyyy' }}</p>
+      <p><ion-icon name="pricetag-outline"></ion-icon> Rs. {{ delivery.details.totalPrice }}</p>
+      <p><ion-icon name="analytics-outline"></ion-icon> {{ paymentStatus[delivery.paymentStatus] }}</p>
+      <p><ion-icon name="card-outline"></ion-icon> {{ paymentMethod[delivery.paymentMethod] }}</p>
+
+      @if(delivery.notes) {
+        <div>
+          <p><b>Notes</b></p>
+          <p>{{ delivery.notes }}</p>
+        </div>
+      }
+
+      <div>
+        <p><b>Items</b></p>
+        @for(item of delivery.details.items; track item) {
+          <p>{{ item }}</p>
+        }
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    @if (delivery.restaurant.photoUrl) {
+      <img [src]="delivery.restaurant.photoUrl" />
+    }
+    <ion-card-header>
+      <ion-card-title>{{ delivery.restaurant.name }}</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <p><ion-icon name="location-outline"></ion-icon> {{ delivery.restaurant.address }}</p>
+      <p><ion-icon name="call-outline"></ion-icon> {{ delivery.restaurant.phoneNumber }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{ delivery.customer.name }}</ion-card-title>
+    </ion-card-header>
+  
+    <ion-card-content>
+      <p><ion-icon name="location-outline"></ion-icon> {{ delivery.customer.address }}</p>
+      <p><ion-icon name="call-outline"></ion-icon> {{ delivery.customer.phoneNumber }}</p>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
+<ion-button expand="full">Accept</ion-button>

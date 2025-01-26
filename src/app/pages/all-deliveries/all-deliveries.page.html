@@ -1,7 +1,22 @@
 <ion-content>
   @for(delivery of deliveries; track delivery.id) {
-    <ion-item [routerLink]="[delivery.id]">
-      {{ delivery.customer.name }}
-    </ion-item>
+    <ion-item-sliding>
+      <ion-item [routerLink]="[delivery.id]">
+        <ion-thumbnail slot="start">
+          <img [alt]="delivery.restaurant.name" [src]="delivery.restaurant.photoUrl" />
+        </ion-thumbnail>
+        <div>
+          <p><b>{{ delivery.restaurant.name }}</b></p>
+          <p><ion-icon name="restaurant-outline"></ion-icon> {{ delivery.restaurant.address }}</p>
+          <p><ion-icon name="location-outline"></ion-icon> {{ delivery.customer.address }}</p>
+          <p><ion-icon name="timer-outline"></ion-icon> {{ delivery.expectedDeliveryTime | date: 'hh:mm MMM dd' }}</p>
+        </div>
+      </ion-item>
+
+      <ion-item-options>
+        <ion-item-option color="warning">Reject</ion-item-option>
+        <ion-item-option color="success">Accept</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
   }
 </ion-content>
