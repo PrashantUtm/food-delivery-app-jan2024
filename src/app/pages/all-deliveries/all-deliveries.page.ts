@@ -14,7 +14,7 @@ export class AllDeliveriesPage implements OnInit {
   constructor(private deliveryService: DeliveryService) { }
 
   ngOnInit() {
-    this.deliveries = this.deliveryService.getAllDeliveries();
+    this.deliveryService.getAllDeliveries().subscribe(deliveries => this.deliveries = deliveries);
   }
 
 }

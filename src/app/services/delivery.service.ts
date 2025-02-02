@@ -3,6 +3,9 @@ import { Delivery } from '../models/delivery';
 import { PaymentMethod } from '../enums/payment-method';
 import { PaymentStatus } from '../enums/payment-status';
 import { DeliveryStatus } from '../enums/delivery-status';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -62,13 +65,13 @@ export class DeliveryService {
     },
   ];
 
-  constructor() { }
+  constructor(private httpClient: HttpClient) { }
 
-  public getAllDeliveries() : Delivery[] {
-    return this.deliveries;
+  public getAllDeliveries() : Observable<Delivery[]> {
+    return this.httpClient.get<Delivery[]>(`${environment.baseUrl}/mocks/deliveries`);
   }
 
-  public getDelivery(id: string) : Delivery {
-    return this.deliveries.find(d => d.id === id) as Delivery;
+  public getDelivery(id: string) : Observable<Delivery> {
+    return this.httpClient.get<Delivery>(`${environment.baseUrl}/mocks/deliveries/${id}`);
   }
 }
