@@ -68,10 +68,14 @@ export class DeliveryService {
   constructor(private httpClient: HttpClient) { }
 
   public getAllDeliveries() : Observable<Delivery[]> {
-    return this.httpClient.get<Delivery[]>(`${environment.baseUrl}/mocks/deliveries`);
+    return this.httpClient.get<Delivery[]>(`${environment.baseUrl}/deliveries`);
   }
 
   public getDelivery(id: string) : Observable<Delivery> {
-    return this.httpClient.get<Delivery>(`${environment.baseUrl}/mocks/deliveries/${id}`);
+    return this.httpClient.get<Delivery>(`${environment.baseUrl}/deliveries/${id}`);
+  }
+
+  public updateDelivery(delivery: Delivery): Observable<{delivery:Delivery, message: string}> {
+    return this.httpClient.put<{delivery:Delivery, message: string}>(`${environment.baseUrl}/deliveries/${delivery.id}`, delivery);
   }
 }

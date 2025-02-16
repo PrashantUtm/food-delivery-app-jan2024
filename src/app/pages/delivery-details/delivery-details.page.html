@@ -60,4 +60,9 @@
     </ion-card-content>
   </ion-card>
 </ion-content>
-<ion-button expand="full">Accept</ion-button>
+<ion-button 
+  [disabled]="!isNextButtonEnabled"
+  (click)="onNextButtonClicked()"
+  expand="full">
+  {{ nextButtonLabel }}
+</ion-button>

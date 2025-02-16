@@ -20,6 +20,10 @@ export class AuthService {
     return !!localStorage.getItem(this.usernameKey);
   }
 
+  public getUsername(): string {
+    return localStorage.getItem(this.usernameKey) as string;
+  }
+
   public logout() : void {
     localStorage.removeItem(this.usernameKey);
   }
