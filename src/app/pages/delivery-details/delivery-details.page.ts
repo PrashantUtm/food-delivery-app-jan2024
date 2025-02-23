@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DeliveryStatus } from 'src/app/enums/delivery-status';
 import { PaymentMethod } from 'src/app/enums/payment-method';
@@ -43,12 +44,23 @@ export class DeliveryDetailsPage implements OnInit {
   public paymentMethod = PaymentMethod;
   public isNextButtonEnabled = true;
   public nextButtonLabel = 'Accept';
+  public isModalOpen = false;
+
+  public completeForm: FormGroup;
 
   constructor(
     private route: ActivatedRoute,
     private deliveryService: DeliveryService,
-    private authService: AuthService
-  ) { }
+    private authService: AuthService,
+    private formBuilder: FormBuilder
+  ) { 
+    this.completeForm = this.formBuilder.group({
+      paymentMethod: [this.delivery.paymentMethod],
+      paymentStatus: [this.delivery.paymentStatus],
+      feedback: [''],
+      proofOfDelivery: ['']
+    })
+  }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id') as string;
@@ -69,6 +81,7 @@ export class DeliveryDetailsPage implements OnInit {
         this.updateDelivery();
         break;
       case DeliveryStatus.InProgress:
+        this.setModal(true);
         break;
     }
     this.setButtonState();
@@ -90,6 +103,23 @@ export class DeliveryDetailsPage implements OnInit {
         this.nextButtonLabel = 'Completed';
         break;
     }
+  }
+
+  public completeDelivery(): void {
+    console.log(this.completeForm.value);
+
+    this.delivery.status = DeliveryStatus.Completed;
+    this.delivery.paymentMethod = this.completeForm.value.paymentMethod;
+    this.delivery.paymentStatus = this.completeForm.value.paymentStatus;
+    this.delivery.feedback = this.completeForm.value.feedback;
+
+    this.updateDelivery();
+
+    this.setModal(false);
+  }
+
+  public setModal(state: boolean): void {
+    this.isModalOpen = state;
   }
 
   private updateDelivery(): void {

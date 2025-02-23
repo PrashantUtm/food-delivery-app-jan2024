@@ -59,6 +59,63 @@
       <p><ion-icon name="call-outline"></ion-icon> {{ delivery.customer.phoneNumber }}</p>
     </ion-card-content>
   </ion-card>
+  {{ delivery.status}} {{ deliveryStatus.Completed }}
+  @if(delivery.status == deliveryStatus.Completed) {
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Feedback</ion-card-title>
+      </ion-card-header>
+    
+      <ion-card-content>
+        <p><ion-icon name="location-outline"></ion-icon> {{ delivery.feedback }}</p>
+        <p><ion-icon name="call-outline"></ion-icon> {{ delivery.proofOfDelivery }}</p>
+      </ion-card-content>
+    </ion-card>
+  }
+
+  <ion-modal [isOpen]="isModalOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Complete</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setModal(false)">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <form [formGroup]="completeForm">
+          <h3>Payment Method</h3>
+          <ion-radio-group formControlName="paymentMethod">
+            <ion-radio value="0">Cash</ion-radio><br />
+            <ion-radio value="1">Credit/Debit Card</ion-radio><br />
+            <ion-radio value="2">Bank transfer</ion-radio><br />
+            <ion-radio value="3">Other</ion-radio>
+          </ion-radio-group>
+
+          <h3>Payment Status</h3>
+          <ion-radio-group formControlName="paymentStatus">
+            <ion-radio value="0">Paid</ion-radio><br />
+            <ion-radio value="1">Pending</ion-radio><br />
+          </ion-radio-group>
+
+          <h3>Feedback</h3>
+          <ion-textarea placeholder="Type something here" formControlName="feedback" fill="outline"></ion-textarea>
+
+          <h3>Proof of delivery</h3>
+          <ion-thumbnail>
+            <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+          </ion-thumbnail>
+        </form>
+      </ion-content>
+      <ion-button 
+        expand="full"
+        class="bottom-button"
+        shape="round"
+        (click)="completeDelivery()"
+      >Done</ion-button>
+    </ng-template>
+  </ion-modal>
 </ion-content>
 <ion-button 
   [disabled]="!isNextButtonEnabled"
