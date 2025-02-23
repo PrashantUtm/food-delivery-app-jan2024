@@ -18,7 +18,7 @@
       (input)="onTextChanged()"
     ></ion-input>
     @if (invalidInput) {
-      <ion-label color="danger">Enter a valid username and password.</ion-label>
+      <ion-label color="danger">{{errorMessage}}</ion-label>
     }
   </div>
   <div class="ion-text-center">

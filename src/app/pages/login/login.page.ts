@@ -12,6 +12,7 @@ export class LoginPage implements OnInit {
   public username: string = '';
   public password: string = '';
   public invalidInput = false;
+  public errorMessage = 'Enter a valid username and password';
 
   constructor(
     private authService: AuthService,
@@ -23,8 +24,22 @@ export class LoginPage implements OnInit {
 
   public login(): void {
     console.log(`${this.username} ${this.password}`);
-    if (this.authService.auth(this.username, this.password)) {
-      this.router.navigate(['/']);
+    if (this.username && this.username.trim() !== '' && this.password) {
+      this.errorMessage = 'Enter a valid username and password';
+      this.invalidInput = false;
+      this.authService.auth(this.username, this.password).subscribe({
+        next: (success) => {
+          if (success) {
+            this.router.navigate(['/']);
+          } else {
+            this.invalidInput = true;
+          }
+        },
+        error: (error: Error) => {
+          this.invalidInput = true;
+          this.errorMessage = error.message;
+        }
+    });
     } else {
       this.invalidInput = true;
     }
